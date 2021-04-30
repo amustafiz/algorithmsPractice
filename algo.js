@@ -72,3 +72,20 @@ const binSearch = (arr, target) => {
 }
 
 console.log(binSearch([6,7,1,2,3,4,5], 3));
+
+
+function findSmallestCommon(a, b, c) {
+  let i = 0; 
+  let j = 0;
+  let k = 0;
+  while (i < a.length && j < b.length && k < c.length) {
+    if (a[i] === b[j] && b[j] === c[k]) return a[i];
+    if (a[i] <= b[j] && a[i] <= c[k]) i +=1;
+    else if (b[j] <= a[i] && b[j] <= c[k]) j += 1;
+    else if (c[k] <= a[i] && c[k] <= b[j]) k += 1;
+  }
+}
+let v1 = [6, 7, 10, 25, 30, 63, 64];
+let v2 = [1, 4, 5, 6, 7, 8, 50];
+let v3 = [1, 6, 10, 14];
+console.log(findSmallestCommon(v1,v2,v3));
