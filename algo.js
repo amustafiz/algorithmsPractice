@@ -87,10 +87,10 @@ function findSmallestCommon(a, b, c) {
     else if (c[k] <= a[i] && c[k] <= b[j]) k += 1;
   }
 }
-let v1 = [6, 7, 10, 25, 30, 63, 64];
-let v2 = [1, 4, 5, 6, 7, 8, 50];
-let v3 = [1, 6, 10, 14];
-console.log(findSmallestCommon(v1,v2,v3));
+let v6 = [6, 7, 10, 25, 30, 63, 64];
+let v7 = [1, 4, 5, 6, 7, 8, 50];
+let v8 = [1, 6, 10, 14];
+console.log(findSmallestCommon(v6,v7,v8));
 
 
 const rotationArray = (arr, n) => {
@@ -150,3 +150,26 @@ const findLowIndexRefact = (arr, key) => {
 const arr = [1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4, 4,5, 5, 5,6, 6, 6, 6, 6, 6];
 
 console.log(findLowIndexRefact( arr, 5));
+
+const moveZerosToLeft = (arr) => {
+  let readIdx = arr.length - 1;
+  let writeIdx = arr.length - 1;
+  while (readIdx >= 0) {
+    if (arr[readIdx] !== 0) {
+      arr[writeIdx] = arr[readIdx];
+      writeIdx -= 1;
+    }
+    readIdx -= 1;
+  }
+  while (writeIdx >= 0) {
+    arr[writeIdx] = 0;
+    writeIdx -= 1;
+  }
+  return arr; 
+}
+let v = [1, 10, 20, 0, 59, 63, 0, 88, 0];
+console.log("Original Array: [" + v + "]");
+
+moveZerosToLeft(v);
+
+console.log("After Moving Zeros: [" + v+ "]");
