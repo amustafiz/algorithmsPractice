@@ -45,33 +45,35 @@ const arrayMaxRefact = (arr, w) => {
 
 console.log(arrayMaxRefact([1,2,3,4,5,6,7,8,9,10],3));
 
-const binSearch = (arr, target) => {
-  // arr has sorted and unsorted parts
-  // q: how to look through unsorted
-  // q: how to know which is unsorted
-  const binSearchHelper = (arr, start=0, end = arr.length - 1, target) => {
-    if (start > end) {
-      return -1;
-    }
-    let mid = Math.floor(start + end)/2;
-
-    if (arr[mid] === target) return mid;
-    // target in sorted array and less than mid
-    if (arr[start] <= arr[end] && target <= arr[mid] && target >= arr[start]) {
-      return binSearchHelper(arr, start, mid - 1, target);
-    } else if (arr[mid] <= arr[end] && target >= arr[mid] && target <= arr[end]){
-      return binSearchHelper(arr, mid + 1, end, target);
-    } else if (arr[end] <= arr[mid]) {
-      return binSearchHelper(arr, mid + 1, end, target);
-    } else if (arr[start] >= arr[mid]){
-      return binSearchHelper(arr, start, mid - 1, target);
-    }
-    return - 1;
+let helper = (arr, key, start, end) => {
+  if (start > end) return -1;
+  let mid = Math.floor((start + end)/2);
+  let middleNum = arr[mid];
+  let startNum = arr[start];
+  let endNum = arr[end];
+  if (key === middleNum) return mid;
+  if (key <= middleNum &&  key >= startNum && startNum<= middleNum) {
+    return helper(arr, key,start, mid - 1);
+  } else if (key >= middleNum &&  key <= endNum && middleNum <= endNum) {
+    return helper(arr, key, mid + 1, end);
+  } else if (endNum <= middleNum) {
+    return helper(arr, key, mid + 1, end);
+  } else if (startNum >= middleNum) {
+    return helper (arr, key, start, mid - 1);
   }
-  return binSearchHelper(arr, 0, arr.length - 1, target);
+  return -1;
+};
+
+const binarySearchRotated =   function(arr, key){
+  return helper(arr, key, 0, arr.length - 1);
 }
 
-console.log(binSearch([6,7,1,2,3,4,5], 3));
+const v1 = [6, 7, 1, 2, 3, 4, 5];
+const v2 = [4, 5, 6, 1, 2, 3];
+console.log("Key(6) found at: " + binarySearchRotated(v1, 6));
+console.log("Key(3) found at: " + binarySearchRotated(v1, 3));
+console.log("Key(3) found at: " + binarySearchRotated(v2, 3));
+console.log("Key(6) found at: " + binarySearchRotated(v2, 6));
 
 
 function findSmallestCommon(a, b, c) {
@@ -89,3 +91,62 @@ let v1 = [6, 7, 10, 25, 30, 63, 64];
 let v2 = [1, 4, 5, 6, 7, 8, 50];
 let v3 = [1, 6, 10, 14];
 console.log(findSmallestCommon(v1,v2,v3));
+
+
+const rotationArray = (arr, n) => {
+  // if n < 0, splice n arr el from front, add to back
+  // if n > 0, splice n arr el from back, add to front
+  if (n === 0) return arr;
+  if (n < 0) {
+   const toInsert = arr.splice(0,Math.abs(n));
+   arr.push(...toInsert);
+   return arr;
+  }
+   else{
+    const toInsert = arr.splice(arr.length - n, n);
+    arr.unshift(...toInsert);
+    return arr;
+   }
+}
+// const arr = [1, 10, 20, 0, 59, 86, 32, 11, 9, 40];
+// console.log(rotationArray(arr, -2))
+// console.log(rotationArray(arr, 2));
+
+//[ 20, 0, 59, 86, 32, 11, 9, 40, 1, 10 ]
+
+
+
+const findLowIndex = (arr, target) => {
+  const helper = (arr, target, low, high) =>{
+    let mid = Math.floor((low + high)/2);
+    if (low === arr.length - 1) return - 1;
+    if (low > high) return low;
+    if (target  > arr[mid]) low = mid + 1;
+    else if (target <= arr[mid]) high = mid - 1;
+    return helper(arr, target, low, high);
+  }
+  return helper(arr, target, 0, arr.length - 1);
+}
+
+
+const findLowIndexRefact = (arr, key) => {
+  let low = 0;
+  let high = arr.length - 1;
+  let mid = Math.floor((low + high)/2);
+
+  while (low <= high) {
+    if (key > arr[mid]) low = mid + 1;
+    else if (key <= arr[mid]){
+      high = mid - 1;
+    }
+    mid = Math.floor((low + high)/2);
+  }
+    if (low < arr.length && arr[low] === key) {
+      return low;
+    }
+    return -1;
+  
+}
+const arr = [1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4, 4,5, 5, 5,6, 6, 6, 6, 6, 6];
+
+console.log(findLowIndexRefact( arr, 5));
